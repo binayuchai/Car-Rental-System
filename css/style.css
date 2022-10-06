@@ -1,0 +1,256 @@
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Caveat&family=Poppins:wght@300&display=swap');
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    /* Variable define */
+    
+     :root {
+        --primary-color: #0d6efd;
+        --white-color: #fff;
+        --btn-primary: #dc3545;
+        --text-color: #b0b0b0;
+        --black-color: #000000;
+        --primary-font: poppins, sans-serif;
+        --secondary-font: 'Quicksand', sans-serif;
+        --bg-color: #f9f9f9;
+    }
+    
+    body {
+        font-size: 100%;
+        font-weight: 400;
+        font-size: 1rem;
+        color: var(--text-color);
+        font-family: var(--primary-font);
+        overflow-x: hidden;
+    }
+    
+    h1 {
+        font-size: 3.125rem;
+        font-weight: 900;
+    }
+    
+    h2 {
+        font-size: 2rem;
+        font-weight: 800;
+        font-family: var(--secondary-font);
+        text-transform: capitalize;
+    }
+    
+    p {
+        font-size: 1rem;
+        color: var(--text-color);
+        font-weight: 400;
+        line-height: 1.2rem;
+        letter-spacing: 1px;
+    }
+    /* Header styling */
+    
+    .header-right-info {
+        display: inline-block;
+    }
+    
+    .header-right-info span {
+        color: var(--text-color);
+    }
+    /* Navbar styling */
+    
+    .nav-bar {
+        position: sticky;
+        top: -1px;
+        position: -webkit-sticky;
+    }
+    
+    .logo-size {
+        width: 70px;
+        height: 50px;
+    }
+    
+    .nav-item {
+        padding: 0 0.5rem;
+        font-size: 1.3rem;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-item a {
+        color: var(--text-color);
+        font-weight: 500;
+    }
+    
+    .nav-link:hover,
+    .active {
+        color: var(--white-color) !important;
+    }
+    
+    .navbar .navbar-toggler {
+        color: var(--white-color);
+    }
+    
+    .navbar .navbar-toggler:focus {
+        box-shadow: none;
+    }
+    /* Header styling ends */
+    
+    .home-section {
+        background-image: url(../images/car2.jpg);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        padding-top: 5rem;
+        height: auto;
+        padding-bottom: 20rem;
+        width: 100%;
+        z-index: -999;
+    }
+    /*   
+
+    } */
+    
+    .home-text {
+        z-index: 1000;
+    }
+    
+    .book-area {
+        background-color: var(--white-color);
+        box-shadow: 0.43rem 0.92rem 10px rgba(0 0 0 / 10%);
+        margin-top: -4rem;
+        position: relative;
+        padding: 3.125rem 1.875rem;
+        z-index: 1;
+    }
+    /* Navbar styling ends*/
+    /* Home section ends */
+    /* Main section starts*/
+    
+    #main-section {
+        position: relative;
+        background-color: var(--bg-color);
+        padding-top: 17rem;
+    }
+    /* Mobile reponsive */
+    
+    @media only screen and (max-width: 968px) {
+        #main-section {
+            margin-top: -20rem;
+        }
+    }
+    /* Mobile reponsive ends*/
+    /* About Section */
+    
+    .about-section {
+        padding-top: 5rem;
+        text-align: center;
+        background-color: var(--bg-color);
+    }
+    
+    .card {
+        border: none !important;
+        background-color: var(--bg-color) !important;
+    }
+    
+    .card-width {
+        width: 100%;
+    }
+    /* Counter Styling starts */
+    
+    .counter {
+        background-image: url('../images/pexels-maria-orlova-4969878.jpg');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding: 3.125rem;
+        position: relative;
+        z-index: -10;
+    }
+    
+    .counter::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--black-color);
+        opacity: 0.5;
+        z-index: -1;
+    }
+    
+    .counter h2,
+    .counter p {
+        z-index: 4000;
+        color: var(--white-color);
+    }
+    /* Counter Styling ends */
+    /* Why us section */
+    
+    #whyUs {
+        padding: 7rem 0;
+        background-color: var(--bg-color);
+    }
+    
+    .image-size {
+        width: 120px !important;
+        height: 90px !important;
+    }
+    /* Contact Styling starts */
+    
+    .contact-section {
+        margin-top: 9rem;
+        padding-bottom: 3rem;
+    }
+    
+    .error {
+        color: red;
+    }
+    /* Contact Styling ends */
+    /* About Styling starts */
+    
+    .about-us {
+        padding-top: 3rem;
+        padding-bottom: 5rem;
+    }
+    
+    .about-us p {
+        margin-top: 20rem;
+    }
+    /* About Styling end */
+    /* Vehicles Styling starts*/
+    
+    .vehicle-section {
+        margin-top: 8rem;
+        padding-bottom: 3rem;
+    }
+    /* Vehicles Styling ends*/
+    /* Main section ends */
+    /* Footer Styling starts */
+    
+    .footer {
+        padding-top: 3rem;
+    }
+    
+    .contact-UL li a {
+        text-decoration: none;
+        color: var(--black-color);
+    }
+    
+    .subscribe-group input {
+        border: none;
+        border-radius: 10px;
+        padding: 1rem 2rem;
+        background-color: var(--bg-color);
+    }
+    
+    #right-reserved {
+        height: 5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background-color: var(--bg-color);
+    }
+    
+    #right-reserved p {
+        color: var(--black-color);
+    }
+    /* Footer styling endS */
