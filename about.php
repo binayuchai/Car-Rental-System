@@ -20,6 +20,8 @@ session_start();
 </head>
 
 <body>
+  
+<?php include('scrollUpBtn.php');?>
 
  <?php include('includes/header.php');?>
 
@@ -42,10 +44,9 @@ Eveniet est, distinctio odio rerum beatae, qui accusamus facere, ad a necessitat
 <?php include('includes/footer.php');?>
   <!-- Footer Section ends -->
 
+<script src="./js/bootstrap.min.js"></script> 
+ 
 
-  <!-- Js inclusion -->
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/script.js"></script>
 
 </body>
 

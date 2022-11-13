@@ -14,12 +14,16 @@
                         --mainBackground: #f5f5f5;
                         /* property */
                         --sidebarWidth: 13rem;
-                        --topbarHeight: 3.15rem;
+                        --topbarHeight: 3.1rem;
+                    }
+                    
+                    html {
+                        scroll-behavior: smooth;
                     }
                     
                     body {
                         font-size: 1rem;
-                        overflow: hidden;
+                        overflow-x: hidden;
                     }
                     /* Sidebar Nav */
                     
@@ -28,6 +32,11 @@
                         height: var(--topbarHeight);
                         background-color: #f9f9f9;
                         box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+                        height: var(--topbarHeight);
+                        position: fixed;
+                        top: 0;
+                        width: 100%;
+                        z-index: 1;
                     }
                     
                     .toggle-menu {
@@ -49,11 +58,10 @@
                         transition: .5s;
                         overflow: hidden;
                     }
-                    
-                    .navigation.active {
+                    /*         .navigation.active {
                         width: 0%;
                         transition: .3s;
-                    }
+                    } */
                     
                     .navigation ul {
                         padding-left: 1rem;
@@ -87,7 +95,11 @@
                     /* Content section */
                     
                     .data {
+                        padding: 2rem;
+                        margin-top: 3.05rem;
                         margin-left: var(--sidebarWidth);
+                        height: calc(100%-var(--topbarHeight));
+                        z-index: -1;
                     }
                     /* Responsive Design */
                     
@@ -96,15 +108,14 @@
                             display: block;
                         }
                         .navigation {
-                            position: fixed;
                             top: 3.15rem;
-                            left: 0;
+                            left: -100%;
                             height: 100vh;
                             z-index: 1000;
                         }
                         .data {
                             margin-left: 0;
-                            z-index: -9999;
+                            width: 100%;
                         }
                         .navigation.active {
                             left: 0;

@@ -22,9 +22,10 @@ session_start();
 <body>
 
   <!-- Header Section Start -->
-
+  
+  
+  
   <?php include('includes/header.php');?>
-
   
   <!-- header part ends-->
 
@@ -35,14 +36,11 @@ session_start();
       <?php
   if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true)
   {
-    echo "
-    <div class='mb-0
-    alert alert-primary alert-dismissible fade show' role='alert'>
-    <strong>$_SESSION[username] </strong> Welcome to our car rental site.
-    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-  </div>
-  
-    ";
+    $_SESSION['status'] = $_SESSION['username'] .',Welcome to our car rental site.';
+    $_SESSION['status_code'] = 'success';
+    
+ 
+ 
   }
   ?>
       <div class="container-fluid img-fluid home-section ">
@@ -255,8 +253,29 @@ session_start();
  
 
   <!-- Js inclusion -->
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/script.js"></script>
+
+  
+
+
+  <?php
+ if(isset($_SESSION['status']) && $_SESSION['status']!='' &&  $_SESSION['count'] == true){
+
+ ?>
+ <script>
+ swal({
+  title: "<?php echo $_SESSION['status']; ?>",
+  //text: "You clicked the button!",
+  icon: "<?php echo $_SESSION['status_code']; ?>",
+  button: "Ok",
+});
+</script>
+ 
+<?php 
+ $_SESSION['count'] = false;
+unset($_SESSION['status']);
+unset($_SESSION['status_code']);
+ }
+?>
 
 </body>
 

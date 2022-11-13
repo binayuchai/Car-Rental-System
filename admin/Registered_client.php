@@ -1,6 +1,7 @@
 
 <?php
 require("../config.php");
+session_start();
 
 
 
@@ -23,7 +24,7 @@ require("../config.php");
 
 </style>
 </head>
-<?php include('./dashboard.php');?>
+
 <body>
     <div class="container">
         <div class="data" id="data">
@@ -80,23 +81,11 @@ require("../config.php");
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+<?php include('./dashboard.php');?>
 
 
 <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-<script src="../js/app.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+
 
 <script>
 

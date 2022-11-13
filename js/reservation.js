@@ -64,7 +64,7 @@ function validateSecondName(input) {
         showError("second_name_error", "Last name cannot be blank.");
         detail_second_name.classList.add('is-invalid');
     } else if (!regexName.test(input)) {
-        showError("first_name_error", "First name should contain letters with more than 4 characters.");
+        showError("second_name_error", "First name should contain letters with more than 4 characters.");
         detail_first_name.classList.add('is-invalid');
     } else {
         showError("second_name_error", "");
@@ -78,6 +78,12 @@ function validateAge(input) {
     input = input.value.trim();
     if (isEmpty(input)) {
         showError("age_error", "Age cannot ve blank");
+        detail_age.classList.add('is-invalid');
+    } else if (input.length < 4) {
+        showError("age_error", "Age cannot have more than 3 digits.");
+        detail_age.classList.add('is-invalid');
+    } else if (isNaN(input)) {
+        showError("age_error", "Age can only be in numbers.");
         detail_age.classList.add('is-invalid');
     } else {
         showError("age_error", "");
@@ -171,11 +177,9 @@ function validateState(input) {
 
 function completeReservation() {
     if (validFirstName && validSecondName && validAddress && validAge && validEmailAddress && validPhone && validState && validCity) {
-        alert("successful");
         return true;
     } else {
         submitFailed.innerHTML = "*Please complete the form below";
-        alert("Unsuccessful");
         return false;
     }
 }

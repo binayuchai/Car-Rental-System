@@ -2,6 +2,8 @@
 
 <?php
 require("../config.php");
+session_start();
+
 
 $add_image_error = "";
 $image = "";
@@ -9,14 +11,15 @@ $image = "";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 $filetemp = $destfile ="";
 $destfile = "";
+
 //validation of image
-  $file = $_FILES['add_car_image'];
+  $file = $_FILES['file'];
   $image =$file;
   $filename = $file['name'];
   $filetmp = $file['tmp_name'];
   $fileerror = $file['error'];
-
-  
+  $uploadOk = 1;
+ 
   //image partition i.e (hello.jpg) => hello and jpg
   $file_part = explode('.',$filename); 
 
@@ -24,72 +27,83 @@ $destfile = "";
 
   $valid_file_ext = array('png','jpg','jpeg');
 
-  if($fileerror == 0)
+  if($fileerror != 0)
   {
-
-   if(in_array($file_extension,$valid_file_ext)){
+    $uploadOk = 0;
     
-  $destfile = 'image_upload/'.$filename;
-  
-    move_uploaded_file($filetemp,$destfile);
-
-
-      $car_query = "INSERT INTO `add_car`(`car_model`, `car_desc`, `Image`) VALUES ('$_POST[add_car_title]','$_POST[add_car_desc]','$destfile')";
-      if (mysqli_query($con, $car_query)) {
-        // if data inserted successfully
-        echo "
-              <script>
-              alert('Successfully registered.');
-        window.location.href='add_car.php';
-        </script>";
-      } else {
-        echo "
-            <script>
-            alert('Doesnot registered');
-            window.location.href='add_car.php';
-            </script>
-            ";
-      }
-  }
-      else{
-        $add_image_error = "Format is not supported, only supports jpg,jpeg and png";
-        echo "
-            <script>
-            window.location.href='add_car.php';
-            </script>
-            ";
-      
-    }
-}
-  
-// else if 
-  else{
       $add_image_error = "Error with file. Try again";
       echo "
       <script>
-    
+    alert('Error with file. Try again');
       window.location.href='add_car.php';
       </script>
       ";
-     
+
+
   }
-
-
-
-}
-
-
-
-
-  // To check the whether input given by user is valid or not
-  function test_input($data)
-  {
-  $data = trim($data); // to remove extra space ,tab 
-  $data = stripslashes($data); // to remove backslashes
-  $data = htmlspecialchars($data); // to overcome from exploitation of input 
-  return $data;
-  }
+//Check the extension of file 
+   if(!in_array($file_extension,$valid_file_ext)){
+   
+    $uploadOk = 0;
+    
+    $add_image_error = "Format is not supported, only supports jpg,jpeg and png";
+    echo "
+        <script>
+        alert('Format is not supported, only supports jpg,jpeg and png');
+        window.location.href='add_car.php';
+        </script>
+        ";
   
+
+   }
+    //Check the file size
+/* 
+    if($_FILES["add_car_image"]["size"] > 1000000)
+    {
+      $uploadOk = 0;
+    
+      echo "Sorry, Your file is too large";
+      
+    } */
+
+    if($uploadOk == 0){
+      echo "
+      <script>
+    alert('Unsuccessful');
+      window.location.href='add_car.php';
+      </script>
+      ";
+    }
+    else{
+          $destfile = 'upload/'.$filename;
+          
+            move_uploaded_file($filetmp,$destfile);
+
+
+            $car_query = "INSERT INTO `add_car`(`car_model`, `car_desc`, `Image`,`price`) VALUES ('$_POST[add_car_title]','$_POST[add_car_desc]','$destfile','$_POST[price]')";
+            if (mysqli_query($con, $car_query)) 
+            {
+              // if data inserted successfully
+              echo "
+                 <script>
+                  alert('Registered successfully');
+                  window.location.href='add_car.php';
+                  </script>
+              ";
+               
+            } 
+            else
+            {
+              echo "
+                  <script>
+                  alert('Doesnot registered');
+                  window.location.href='add_car.php';
+                  </script>
+                  ";
+            }
+         }
+}
+       
 ?>
 
 
@@ -105,14 +119,13 @@ $destfile = "";
 
   
 </head>
-<?php include('./dashboard.php');?>
+
 
 <body>
 <div class="container">
   <div class="data" id="data">
 <div class="container px-2 my-5">
   <h2 class="mb-4">Add Car Details</h2>
-  <h4><?php echo $image;?></h4>
 <form class="col" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>"  enctype="multipart/form-data" autocomplete="off" method="POST" onsubmit="return validateCarInfo()">
   <div class="mb-3">
     <label for="add_car_title" class="form-label">Car Model Name</label>
@@ -128,9 +141,13 @@ $destfile = "";
   <span class="error" id="desc_error"></span>
 
 </div>
+<div class=" mb-3 ">
+  <label for="price " class=" form-label ">Price</label>
+   <input type = "text" class=" form-control " id="price" name="price" placeholder="Enter price of car">
+ </div>
 <div class="mb-3">
-<label class = "form-label" for="add_car_image">Upload Image</label>
-  <input type="file" class="form-control" id="add_car_image" name="add_car_image" onblur="validateCarImage(this)">
+<label class = "form-label" for="file">Upload Image</label>
+  <input type="file" class="form-control" id="file" name="file" onblur="validateCarImage(this)">
   <span class="error" id="image_error"><?php echo $add_image_error; ?></span>
 
  
@@ -146,8 +163,9 @@ $destfile = "";
 </div>
 
 </div>
-
+<?php include('./dashboard.php');?>
 <!--Form validation using js-->
+
 <script>
 var car_name = document.getElementById("add_car_title");
 var car_desc = document.getElementById("add_car_desc");

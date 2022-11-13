@@ -2,6 +2,17 @@
 require("config.php");
 session_start();
 
+//Import PHPMailer classes 
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require('phpMailer/Exception.php');
+require('phpMailer/PHPMailer.php');
+require('phpMailer/SMTP.php');
+
+
 // Define variables and intialize with empty values
 $user_first_name = $user_last_name = $user_email = $user_phone = $user_address = $user_city = $user_age = $user_state= "";
 
@@ -10,28 +21,90 @@ $user_first_name_err = $user_last_name_err = $user_email_err = $user_phone_err =
 
 // Processing form data when form get submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
+  
+  $user_first_name = test_input($_POST['user_first_name']);
+  $user_last_name = test_input($_POST['user_second_name']);
+  $user_email = test_input($_POST['user_email']);
+  $user_phone = test_input($_POST['user_phone']);
+  $user_address =test_input($_POST['user_address']); 
+  $user_city = test_input($_POST['user_city']);
+  $user_age = test_input($_POST['user_age']);
+  $user_state = test_input($_POST['user_state']);
+  
 
+ if(empty( $user_first_name) && empty( $user_last_name) && empty($user_email) && empty($user_phone) && empty($user_address) && empty($user_city) && empty($user_age) && empty($user_state)){
+  $_SESSION['status'] = 'Fields cannot be empty.';
+  $_SESSION['status_code'] = 'error';
+  header('location:vehicles.php');
+  $_SESSION['count'] = true;
+  
+
+ }
 $register_query = "INSERT INTO `complete_reservation`(`first_name`, `last_name`, `age`, `p_no`, `user_email`, `user_address`, `user_city`, `state`, `zip_code`) 
 VALUES ('$_POST[user_first_name]','$_POST[user_second_name]','$_POST[user_age]','$_POST[user_phone]','$_POST[user_email]','$_POST[user_address]','$_POST[user_city]','$_POST[user_state]','$_POST[user_zip]') ";
  if (mysqli_query($con, $register_query)) {
-  // if data inserted successfully
-  echo "
-         <script>
-         alert('Successfully registered.');
-   window.location.href='vehicles.php';
-   </script>";
-} else {
-  echo "
-      <script>
-      alert('Doesnot registered');
-      window.location.href='vehicles.php';
-      </script>
-       ";
+   // if data inserted successfully
+
+    $_SESSION['status'] = 'Registration successfull, please check your email for more details.';
+    $_SESSION['status_code'] = 'success';
+    header('location:vehicles.php');
+    //Create an instance; passing `true` enables exceptions
+    $mail = new PHPMailer(true);
+
+    try {
+      //Server settings
+
+      $mail->isSMTP();                                            //Send using SMTP
+      $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+      $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+      $mail->Username   = 'arjun.191405@ncit.edu.np';                     //SMTP username
+      $mail->Password   = 'Web&Developer191405@';                               //SMTP password
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+      $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+      //Recipients
+      $mail->setFrom('arjun.191405@ncit.edu.np', 'Arjun uchai');
+      $mail->addAddress($user_email);     //Add a recipient
+      
+
+
+      //Content
+      $mail->isHTML(true);                                  //Set email format to HTML
+      $mail->Subject = 'Confirmation Reservation';
+      $mail->Body    = "<h1><b>Reservation Successfull!</b></h1><h3>Please receive your rented car at location: <b>Balkumari,Lalitpur</b></h3><br>
+      <h2><a href='https://goo.gl/maps/w3M5FXoSpv6Ckak6A' target='_blank'>Visit the link to get location in the map.</a></h2>";
+
+
+      $mail->send();
+
+    } catch (Exception $e) {
+      $_SESSION['status'] = 'Message could not be sent. Mailer Error: {$mail->ErrorInfo}';
+      $_SESSION['status_code'] = 'success';
+      header('location:vehicles.php');
+ 
+    }
+
+} 
+else {
+  $_SESSION['status'] = 'Doesnot registered. Please try again';
+  $_SESSION['status_code'] = 'error';
+  header('location:vehicles.php');
+  $_SESSION['count'] = true;
+
 }
 
+
+
+}
+function test_input($data)
+{
+$data = trim($data); // to remove extra space ,tab 
+$data = stripslashes($data); // to remove backslashes
+$data = htmlspecialchars($data); // to overcome from exploitation of input 
+return $data;
+}
 
 mysqli_close($con);
-}
 
 
 ?>
@@ -42,7 +115,7 @@ mysqli_close($con);
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Vehicles</title>
 
   <!-- Css Links -->
   <link rel="stylesheet" href="./css/style.css" type="text/css">
@@ -53,6 +126,8 @@ mysqli_close($con);
 <body>
 
   <!-- Header Section Start -->
+  
+  <?php include('scrollUpBtn.php');?>
 
   <?php include('includes/header.php'); ?>
 
@@ -74,11 +149,12 @@ mysqli_close($con);
                   
                  <div class='col'>
                   <div class='card'>
-                    <img src="admin/<?php echo $row['Image']; ?>" class='card-img-top'  height = '90' width = '100' alt="<?php echo $row['car_model'];?>">
+                    <img src="./admin/<?php echo $row['Image']; ?>" class='card-img-top'  height = '200' width = '140' alt="<?php echo $row['car_model'];?>">
                 
 
                     <div class='card-body'>
                       <h5 class='card-title'><?php echo $row['car_model']; ?></h5>
+                      <p class="card-text"><strong class="text-danger">Rs.<?php echo $row['price']; ?></strong> per day</p>
                       <p class='card-text'><?php echo $row['car_desc']; ?></p>
 
                       <?php
@@ -89,36 +165,17 @@ mysqli_close($con);
                                 Book Now
                               </button>";
                       } else {
-                        echo "<a href='#' class='btn btn-primary'>Book Now</a>";
+                        echo "<a href='#' id='book' class='btn btn-primary' >Book Now</a>";
+                     
                       }
+                
                       ?>
                     </div>
                   </div>  
                  </div> 
                   <?php }  ?>
               
-                  <div class="col">
-                    <div class="card">
-                      <img src="" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <?php
-                        if (isset($_SESSION['logged_in'])) {
-                          echo "
-                                  <button type='sbutton' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal'>
-                                  Book Now
-                                </button>";
-                        } else {
-                          echo "<a href='#' class='btn btn-primary'>Book Now</a>";
-                        }
-
-
-                        ?>
-                      </div>
-                    </div>
-                  </div>
-  
+                 
 
           </div>
     </div>
@@ -210,14 +267,43 @@ mysqli_close($con);
   <?php include('includes/footer.php'); ?>
   <!-- Footer Section ends -->
 
-  <!-- Js inclusion -->
-  <script src="./js/bootstrap.min.js"></script>
-  <script src="./js/reservation.js"></script>
-  <script src="./js/script.js"></script>
 
+   <!-- Js inclusion -->
+
+ <script src="./js/reservation.js"></script>
+ 
+ <script src="./js/bootstrap.min.js"></script> 
+
+
+ <script>
+
+
+
+  <?php
+ if(isset($_SESSION['status']) && $_SESSION['status']!='' &&  $_SESSION['count'] == true){
+
+ ?>
+ <script>
+  console.log('click successful');
+ swal({
+  title: "<?php echo $_SESSION['status']; ?>",
+  //text: "You clicked the button!",
+  icon: "<?php echo $_SESSION['status_code']; ?>",
+  button: "Ok",
+});
+</script>
+ 
+<?php 
+$_SESSION['count'] = false;
+unset($_SESSION['status']);
+unset($_SESSION['status_code']);
+ }
+?>
 
  
 
+
+  
 </body>
 
 </html>

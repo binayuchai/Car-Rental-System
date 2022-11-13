@@ -24,9 +24,9 @@
         <h3>Company</h3>
         <ul class="list-unstyled mt-1 contact-UL">
           <li class="mb-1"><span>
-              < </span> <a href="#">About</a></li>
+              < </span> <a href="about.php">About</a></li>
           <li class="mb-1"><span>
-              < </span> <a href="#">Contact</a></li>
+              < </span> <a href="contact.php">Contact</a></li>
           <li class="mb-1"><span>
               < </span> <a href="#">Privacy</a></li>
           <li class="mb-1"><span>

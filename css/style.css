@@ -45,22 +45,26 @@
         line-height: 1.2rem;
         letter-spacing: 1px;
     }
+    /* Scroll Up btn */
+    
+    #btn-back-to-top {
+        position: fixed;
+        bottom: 1.1rem;
+        right: 1.2rem;
+        display: none;
+        z-index: 10000000;
+    }
     /* Header styling */
     
     .header-right-info {
-        display: inline-block;
+        float: right;
     }
     
     .header-right-info span {
         color: var(--text-color);
+        padding-right: 0.7rem;
     }
     /* Navbar styling */
-    
-    .nav-bar {
-        position: sticky;
-        top: -1px;
-        position: -webkit-sticky;
-    }
     
     .logo-size {
         width: 70px;
@@ -108,7 +112,7 @@
     } */
     
     .home-text {
-        z-index: 1000;
+        z-index: 1;
     }
     
     .book-area {
@@ -117,7 +121,7 @@
         margin-top: -4rem;
         position: relative;
         padding: 3.125rem 1.875rem;
-        z-index: 1;
+        z-index: 0;
     }
     /* Navbar styling ends*/
     /* Home section ends */
